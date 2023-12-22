@@ -95,6 +95,7 @@ struct DocoptArgs {
     size_t locate;
     size_t mute;
     size_t no_activity;
+    size_t full_screen;
     size_t v20;
     size_t version;
     /* options with arguments */
@@ -106,7 +107,7 @@ struct DocoptArgs {
     char *trace;
     /* special */
     const char *usage_pattern;
-    const char *help_message[19];
+    const char *help_message[20];
 };
 
 struct DocoptArgs docopt(int, char *[], bool, const char *);

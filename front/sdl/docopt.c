@@ -249,6 +249,8 @@ int elems_to_args(struct Elements *elements, struct DocoptArgs *args,
             args->mute = option->value;
         } else if (strcmp(option->olong, "--no-activity") == 0) {
             args->no_activity = option->value;
+        } else if (strcmp(option->olong, "--full-screen") == 0) {
+            args->full_screen = option->value;
         } else if (strcmp(option->olong, "--v20") == 0) {
             args->v20 = option->value;
         } else if (strcmp(option->olong, "--version") == 0) {
@@ -299,7 +301,7 @@ int elems_to_args(struct Elements *elements, struct DocoptArgs *args,
 
 struct DocoptArgs docopt(int argc, char *argv[], const bool help, const char *version) {
     struct DocoptArgs args = {
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, (char *) "8.0", NULL, NULL,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, (char *) "8.0", NULL, NULL,
         NULL,
             usage_pattern,
             { "Usage: virtualxt [options]",
@@ -311,6 +313,7 @@ struct DocoptArgs docopt(int argc, char *argv[], const bool help, const char *ve
               "  --halt                  Debug break on startup.",
               "  --mute                  Disable audio.",
               "  --no-activity           Disable disk activity indicator.",
+              "  --full-screen           Start in full-screen mode.",
               "  --v20                   Enable NEC V20 CPU support.",
               "  --clean                 Remove config file and write a new default one.",
               "  --edit                  Open config file in system text editor.",
@@ -335,6 +338,7 @@ struct DocoptArgs docopt(int argc, char *argv[], const bool help, const char *ve
         {NULL, "--locate", 0, 0, NULL},
         {NULL, "--mute", 0, 0, NULL},
         {NULL, "--no-activity", 0, 0, NULL},
+        {NULL, "--full-screen", 0, 0, NULL},
         {NULL, "--v20", 0, 0, NULL},
         {"-v", "--version", 0, 0, NULL},
         {NULL, "--config", 1, 0, NULL},

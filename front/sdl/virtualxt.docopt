@@ -7,6 +7,7 @@ Options:
   --halt                  Debug break on startup.
   --mute                  Disable audio.
   --no-activity           Disable disk activity indicator.
+  --full-screen           Start in full-screen mode.
   --v20                   Enable NEC V20 CPU support.
   --clean                 Remove config file and write a new default one.
   --edit                  Open config file in system text editor.

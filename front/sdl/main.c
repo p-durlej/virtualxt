@@ -556,6 +556,8 @@ static int load_config(void *user, const char *section, const char *name, const 
 			args.v20 |= atoi(value);
 		else if (!strcmp("no-activity", name))
 			args.no_activity |= atoi(value);
+		else if (!strcmp("full-screen", name))
+			args.full_screen |= atoi(value);
 		else if (!strcmp("harddrive", name) && !args.harddrive) {
 			static char harddrive_image_path[FILENAME_MAX + 2] = {0};
 			strncpy(harddrive_image_path, resolve_path(FRONTEND_ANY_PATH, value), FILENAME_MAX + 1);
@@ -773,15 +775,20 @@ int main(int argc, char *argv[]) {
 		return -1;
 	}
 
+	Uint32 sdl_win_flag = args.full_screen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0;
 	SDL_SetHint(SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4, "1");
 	SDL_Window *window = SDL_CreateWindow(
 			"VirtualXT", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-			640, 480, SDL_WINDOW_SHOWN|SDL_WINDOW_RESIZABLE
+			640, 480, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | sdl_win_flag
 		);
 
 	if (!window) {
 		printf("SDL_CreateWindow() failed with error %s\n", SDL_GetError());
 		return -1;
+	}
+
+	if (args.full_screen) {
+		SDL_SetRelativeMouseMode(true);
 	}
 
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
