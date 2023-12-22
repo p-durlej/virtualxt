@@ -292,20 +292,20 @@ static void blit_char(struct cga_video *c, int ch, vxt_byte attr, int x, int y) 
     struct snapshot *snap = &c->snap;
 
     int bg_color_index = (attr & 0x70) >> 4;
-	int fg_color_index = attr & 0xF;
+    int fg_color_index = attr & 0xF;
 
-	if (attr & 0x80) {
-		if (snap->mode_ctrl_reg & 0x20) {
-			if (snap->cursor_blink)
-				fg_color_index = bg_color_index;
-		} else {
-			// High intensity!
-			bg_color_index += 8;
-		}
-	}
+    if (attr & 0x80) {
+        if (snap->mode_ctrl_reg & 0x20) {
+            if (snap->cursor_blink)
+                fg_color_index = bg_color_index;
+        } else {
+            // High intensity!
+            bg_color_index += 8;
+        }
+    }
 
-	vxt_dword bg_color = cga_palette[bg_color_index];
-	vxt_dword fg_color = cga_palette[fg_color_index];
+    vxt_dword bg_color = cga_palette[bg_color_index];
+    vxt_dword fg_color = cga_palette[fg_color_index];
     int width = (snap->mode_ctrl_reg & 1) ? 640 : 320;
     int start = 0;
     int end = 7;
@@ -314,22 +314,20 @@ static void blit_char(struct cga_video *c, int ch, vxt_byte attr, int x, int y) 
         ch = 0xDB;
         start = (int)snap->cursor_start;
         end = (int)snap->cursor_end;
+        if (end > 7)
+            end = 7;
     }
 
-	for (int i = start; true; i++) {
-        int n = i % 8;
-        vxt_byte glyph_line = cga_font[ch * 8 + n];
+    for (int i = start; i <= end; i++) {
+        vxt_byte glyph_line = cga_font[ch * 8 + i];
 
-		for (int j = 0; j < 8; j++) {
+        for (int j = 0; j < 8; j++) {
             vxt_byte mask = 0x80 >> j;
-			vxt_dword color = (glyph_line & mask) ? fg_color : bg_color;
-			int offset = (width * (y + n) + x + j) * 4;
+            vxt_dword color = (glyph_line & mask) ? fg_color : bg_color;
+            int offset = (width * (y + i) + x + j) * 4;
             blit32(snap->rgba_surface, offset, color);
-		}
-
-        if (n == end)
-            break;
-	}
+        }
+    }
 }
 
 struct vxt_pirepheral *cga_create(vxt_allocator *alloc) VXT_PIREPHERAL_CREATE(alloc, cga_video, {
