@@ -989,7 +989,9 @@ static void lock_F0(CONSTSP(cpu) p, INST(inst)) {
 static void hlt_F4(CONSTSP(cpu) p, INST(inst)) {
    UNUSED(inst);
    VALIDATOR_DISCARD(p);
-   p->halt = true;
+
+   // Halting makes INT 16/AH=00h visibly less responsive - disable for now
+   // p->halt = true;
 }
 
 static void cmc_F5(CONSTSP(cpu) p, INST(inst)) {
