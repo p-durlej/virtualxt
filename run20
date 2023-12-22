@@ -4,7 +4,7 @@ set -e
 
 test -f msdos20/floppy.img	|| cp msdos20/floppy.fresh msdos20/floppy.img
 test -f msdos20/disk.img	|| cp msdos20/disk.fresh msdos20/disk.img
-test -f Makefile		|| premake5 --modules gmake
+test -f Makefile		|| ./premake5 --modules gmake
 test -x build/bin/virtualxt	|| gmake sdl2-frontend
 
 build/bin/virtualxt --config=msdos20 --no-activity --full-screen
